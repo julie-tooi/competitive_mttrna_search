@@ -1,4 +1,4 @@
-# comparative_mttrna_search
+# Competitive mt-tRNA annotation
 
 mt-tRNA annotation based on cmsearch results
 
@@ -83,10 +83,16 @@ infernal ≥ 1.1
 
 ## Usage
 
+CMs for mt-tRNAs can be found, for example, [there](https://zenodo.org/records/2672835)
 
 Usage sample:
 
 ```commandline
+python mitoannotation.py -i test_files/NC_010214.1.fasta -o test_files/NC_010214.1 -c test_files/cms -t 6
+
+python collect_annotation_results.py -i test_files/NC_010214.1 -o test_files/NC_010214.1_annotation_results.tsv
+
+python filter_results.py -i test_files/NC_010214.1_annotation_results.tsv -o test_files/NC_010214.1_annotation_results_filtered.tsv -t test_files/transl_table2.txt -f 20 -c
 
 ```
 
