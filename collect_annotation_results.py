@@ -14,8 +14,8 @@ def find_loops(structure):
 
     # check if acceptor stem annotated the same as others (<>)
     # sometimes it can happen with two-armless CM annotation
-    if (not re.search("\(", structure)) and (not re.search("\)", structure)):
-        if re.search("<", structure) and re.search(">", structure):
+    if "(" not in structure and ")" not in structure:
+        if "<" in structure and ">" in structure:
             search_result_loops = inner_loops_search.findall(structure)
             search_result_stem = None
 
@@ -70,29 +70,31 @@ if __name__ == '__main__':
                         parsed_line = line.strip().split()
                         candidate_id = parsed_line[1]
 
-                        file_handler.readline() # header
-                        file_handler.readline() # spacer
+                        file_handler.readline()  # header
+                        file_handler.readline()  # spacer
 
                         stats = file_handler.readline().strip().split()
 
                         evalue, score, start, end, strand = stats[2], stats[3], stats[9], stats[10], stats[11]
 
-                        file_handler.readline() # empty line
-                        file_handler.readline() # NC negative scoring non-canonical basepairs
-                        structure = file_handler.readline().strip().split()[0] # CS predicted secondary structure of the target sequence
+                        file_handler.readline()  # empty line
+                        file_handler.readline()  # NC negative scoring non-canonical basepairs
+                        structure = file_handler.readline().strip().split()[
+                            0]  # CS predicted secondary structure of the target sequence
 
                         loops, stem = find_loops(structure)
                         structure_shape = structure_description(loops, stem)
 
-                        updated_structure = structure.replace('<', '(').\
-                            replace('>', ')').\
-                            replace(',', '_').\
-                            replace('.', '_').\
+                        updated_structure = structure.replace('<', '('). \
+                            replace('>', ')'). \
+                            replace(',', '_'). \
+                            replace('.', '_'). \
                             replace('-', '_')
 
-                        model_info = file_handler.readline().strip().split()[0] # consensus of the query model, the highest scoring residue sequence is shown
+                        model_info = file_handler.readline().strip().split()[
+                            0]  # consensus of the query model, the highest scoring residue sequence is shown
 
-                        file_handler.readline() # scoring data
+                        file_handler.readline()  # scoring data
 
                         sequence = file_handler.readline().strip()
                         target_sequence = sequence.split()[2]  # target sequence
@@ -102,7 +104,7 @@ if __name__ == '__main__':
 
                         # check if several lines in alignment
                         if (target_sequence_start != start) or (target_sequence_end != end):
-                            file_handler.readline() # NC negative scoring non-canonical basepairs
+                            file_handler.readline()  # NC negative scoring non-canonical basepairs
 
                             additional_structure = file_handler.readline().strip().split()[0]
                             # CS predicted secondary structure of the target sequence
@@ -116,7 +118,7 @@ if __name__ == '__main__':
                                 replace(',', '_'). \
                                 replace('.', '_')
 
-                            file_handler.readline() # consensus of the query model, the highest scoring residue sequence is shown
+                            file_handler.readline()  # consensus of the query model, the highest scoring residue sequence is shown
                             file_handler.readline()  # scoring data
 
                             additional_sequence = file_handler.readline().strip()
@@ -175,4 +177,4 @@ if __name__ == '__main__':
                         line_construct = '\t'.join(line_construct)
                         output.write(f"{line_construct}\n")
 
-print("Done")
+    print("Done")

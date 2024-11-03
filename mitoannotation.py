@@ -6,12 +6,11 @@ from pathlib import Path
 
 
 def construct_cm(path_to_cm, path_to_output, path_to_fasta, cores):
-
     cmd = (
-        f'cmsearch --max ' # turn off filtering
+        f'cmsearch --max '  # turn off filtering
         f'--incE 0.05 '
         f'--notextw --smxsize 80000 '
-        f'--cpu {cores} -g ' # global mode
+        f'--cpu {cores} -g '  # global mode
         f'-o {path_to_output} '
         f'{path_to_cm} ',
         f'{path_to_fasta}'
@@ -63,4 +62,4 @@ if __name__ == '__main__':
             except subprocess.CalledProcessError as e:
                 print(e)
 
-print("Done")
+    print("Done")

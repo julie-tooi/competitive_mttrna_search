@@ -83,7 +83,7 @@ infernal ≥ 1.1
 
 ## Usage
 
-CMs for mt-tRNAs can be found, for example, [there](https://zenodo.org/records/2672835)
+CMs for mt-tRNAs can be found, for example, [here](https://zenodo.org/records/2672835)
 
 Usage sample:
 

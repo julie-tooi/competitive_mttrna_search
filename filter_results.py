@@ -10,7 +10,7 @@ from operator import itemgetter
 
 
 def translate(dna_seq):
-    translate_table = {'A': 'U', 'T': 'A', 'C':'G', 'G':'C'}
+    translate_table = {'A': 'U', 'T': 'A', 'C': 'G', 'G': 'C'}
 
     rna_seq = []
 
@@ -36,8 +36,8 @@ def collect_trna_anticodons(anticodon_collection):
         for amino_acid_pos in range(len(amino_acids)):
             trna_gene = f"trn{amino_acids[amino_acid_pos]}"
             codon = f"{base_1[amino_acid_pos]}" \
-                        f"{base_2[amino_acid_pos]}" \
-                        f"{base_3[amino_acid_pos]}"
+                    f"{base_2[amino_acid_pos]}" \
+                    f"{base_3[amino_acid_pos]}"
 
             anticodon = translate(codon)[::-1]
 
@@ -70,7 +70,6 @@ def find_loops(structure):
 
 
 def define_ac_loop(loops, shape):
-
     new_loops = []
     for loop in loops:
         new_loops.append(loop.group(1))
@@ -104,7 +103,6 @@ def define_ac_loop(loops, shape):
 
 
 def search_codon(codon_loop, sequence, trn_type, anticodon_collection):
-
     codon_loop_start, codon_loop_end = codon_loop.start(1), \
                                        codon_loop.end(1)
 
@@ -127,7 +125,6 @@ def search_codon(codon_loop, sequence, trn_type, anticodon_collection):
 
 
 def define_groups(strand_group):
-
     sorted_strand_groups = sorted(strand_group, key=itemgetter(0))
 
     one_group = []
@@ -145,7 +142,7 @@ def define_groups(strand_group):
             group_end = group[1]
 
             if (previous_group_start <= group_start <= previous_group_end) or \
-                (previous_group_start <= group_end <= previous_group_end):
+                    (previous_group_start <= group_end <= previous_group_end):
                 one_group.append(group)
             else:
                 groups_collection.append(one_group)
@@ -158,7 +155,6 @@ def define_groups(strand_group):
 
 
 def find_top_hit(one_group):
-
     sorted_by_bit_score = sorted(one_group, key=lambda start: float(start[2][2]))
 
     top_hit = sorted_by_bit_score[-1]
@@ -173,8 +169,8 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', type=str, help='Path to updated and filtered annotation', required=True)
     parser.add_argument('-c', '--codon', action='store_true', help='Require codon table: strict codon filter')
     parser.add_argument('-t', '--trn', type=str, help='Path to trna-anticodon table (NCBI format)', required=True)
-    parser.add_argument('-f', '--filter_threshold', type=int, help='Bit-score filter: set the filter threshold', required=True)
-
+    parser.add_argument('-f', '--filter_threshold', type=int, help='Bit-score filter: set the filter threshold',
+                        required=True)
 
     args = parser.parse_args()
 
@@ -219,9 +215,9 @@ if __name__ == '__main__':
                 if anticodon_loop:
                     if type(anticodon_loop) == list:
                         anticodon_coordinates_loop_1 = search_codon(anticodon_loop[0],
-                                                             complete_seq,
-                                                             trna_gene,
-                                                             trna_anticodon_collection)
+                                                                    complete_seq,
+                                                                    trna_gene,
+                                                                    trna_anticodon_collection)
                         anticodon_coordinates_loop_2 = search_codon(anticodon_loop[1],
                                                                     complete_seq,
                                                                     trna_gene,
@@ -237,8 +233,8 @@ if __name__ == '__main__':
                             # first entry
                             line_first_entry = line
                             line_first_entry.extend([codon_search_result,
-                                         str(loop_start), str(loop_end),
-                                         trna_shape])
+                                                     str(loop_start), str(loop_end),
+                                                     trna_shape])
                             line_first_entry = "\t".join(line_first_entry)
                             output.write(f"{line_first_entry}\n")
 
@@ -296,7 +292,7 @@ if __name__ == '__main__':
     neg_strand_group = []
 
     with open(path_to_filtered_output, 'r') as prefiltered_handler:
-        header = prefiltered_handler.readline().strip().split("\t") # header
+        header = prefiltered_handler.readline().strip().split("\t")  # header
         header.extend((
             "group", "top_hit"
         ))
